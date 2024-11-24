@@ -55,10 +55,10 @@ def get_all_characters():
     return jsonify(response_body), 200
 
 @app.route('/characters/<int:characters_id>', methods=['GET'])
-def get_character(characters_id):
+def get_character(character_id):
 
-    character = Character.query.get_or_404(characters_id)
-    return jsonify(character), 200
+    character = Character.query.get_or_404(character_id)
+    return jsonify(character.to_dict()), 200
 
 @app.route('/planets', methods=['GET'])
 def get_all_planets():
