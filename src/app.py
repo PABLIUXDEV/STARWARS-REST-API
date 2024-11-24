@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Character
+from models import db, User, Character, Planet, Vehicle
 #from models import Person
 
 app = Flask(__name__)
@@ -54,6 +54,67 @@ def get_all_characters():
     response_body = [character.serialize() for character in characters]
     return jsonify(response_body), 200
 
+@app.route('/characters/<int:characters_id>', methods=['GET'])
+def get_character(characters_id):
+
+    character = Character.query.get_or_404(characters_id)
+    return jsonify(character), 200
+
+@app.route('/planets', methods=['GET'])
+def get_all_planets():
+
+    planets = Planet.query.all()
+    if len(planets) <= 0:
+        return jsonify({"error": "planets not found"}), 404
+    response_body = [planet.serialize() for planet in planets]
+    return jsonify(response_body), 200
+
+@app.route('/vehicles', methods=['GET'])
+def get_all_vehicles():
+
+    vehicles = Vehicle.query.all()
+    if len(vehicles) <= 0:
+        return jsonify({"error": "vehicles not found"}), 404
+    response_body = [vehicle.serialize() for vehicle in vehicles]
+    return jsonify(response_body), 200
+
+
+# @app.route('/user/favorites', methods=['GET'])
+# def get_user_favorites():
+#     # Suponiendo que el usuario actual tiene id=1
+#     user = User.query.get(1)
+#     if len(favorites) <= 0:
+#         return jsonify({"error": "favorites not found"}), 404
+#     response_body = [favorite.serialize() for favorite in user.favorites]
+#     return jsonify(response_body), 200
+
+
+# @app.route('/favorite/characters', methods=['POST'])
+# def add_favorite_character():
+#     # Suponiendo que el usuario actual tiene id=1
+#     user = User.query.get(1)
+#     if len(favorites) <= 0:
+#         return jsonify({"error": "favorites not found"}), 404
+#     response_body = [favorite.serialize() for favorite in user.favorites]
+#     return jsonify(response_body), 200
+
+# @app.route('/favorite/planets', methods=['POST'])
+# def add_favorite_planet():
+#     # Suponiendo que el usuario actual tiene id=1
+#     user = User.query.get(1)
+#     if len(favorites) <= 0:
+#         return jsonify({"error": "favorites not found"}), 404
+#     response_body = [favorite.serialize() for favorite in user.favorites]
+#     return jsonify(response_body), 200
+
+# @app.route('/favorite/vehicles', methods=['POST'])
+# def add_favorite_vehicle():
+#     # Suponiendo que el usuario actual tiene id=1
+#     user = User.query.get(1)
+#     if len(favorites) <= 0:
+#         return jsonify({"error": "favorites not found"}), 404
+#     response_body = [favorite.serialize() for favorite in user.favorites]
+    # return jsonify(response_body), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
