@@ -54,11 +54,11 @@ def get_all_characters():
     response_body = [character.serialize() for character in characters]
     return jsonify(response_body), 200
 
-@app.route('/characters/<int:characters_id>', methods=['GET'])
+@app.route('/characters/<int:character_id>', methods=['GET'])
 def get_character(character_id):
 
     character = Character.query.get_or_404(character_id)
-    return jsonify(character.to_dict()), 200
+    return jsonify(character.serialize()), 200
 
 @app.route('/planets', methods=['GET'])
 def get_all_planets():
