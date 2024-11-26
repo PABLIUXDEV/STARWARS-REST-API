@@ -69,6 +69,13 @@ def get_all_planets():
     response_body = [planet.serialize() for planet in planets]
     return jsonify(response_body), 200
 
+@app.route('/planets/<int:planet_id>', methods=['GET'])
+def get_planet(planet_id):
+
+    planet = Planet.query.get_or_404(planet_id)
+    return jsonify(planet.serialize()), 200
+
+
 @app.route('/vehicles', methods=['GET'])
 def get_all_vehicles():
 
