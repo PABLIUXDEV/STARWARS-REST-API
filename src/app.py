@@ -85,18 +85,24 @@ def get_all_vehicles():
     response_body = [vehicle.serialize() for vehicle in vehicles]
     return jsonify(response_body), 200
 
+@app.route('/vehicles/<int:vehicle_id>', methods=['GET'])
+def get_vehicle(vehicle_id):
 
-# @app.route('/user/favorites', methods=['GET'])
-# def get_user_favorites():
-#     # Suponiendo que el usuario actual tiene id=1
-#     user = User.query.get(1)
-#     if len(favorites) <= 0:
-#         return jsonify({"error": "favorites not found"}), 404
-#     response_body = [favorite.serialize() for favorite in user.favorites]
-#     return jsonify(response_body), 200
+    vehicle = Vehicle.query.get_or_404(vehicle_id)
+    return jsonify(vehicle.serialize()), 200
 
 
-# @app.route('/favorite/characters', methods=['POST'])
+@app.route('/user/favorites', methods=['GET'])
+def get_user_favorites():
+    # Suponiendo que el usuario actual tiene id=1
+    user = User.query.get(1)
+    if len(user.favorites) <= 0:
+        return jsonify({"error": "favorites not found"}), 404
+    response_body = [favorite.serialize() for favorite in user.favorites]
+    return jsonify(response_body), 200
+
+
+# @app.route('/favorites/characters', methods=['POST'])
 # def add_favorite_character():
 #     # Suponiendo que el usuario actual tiene id=1
 #     user = User.query.get(1)
@@ -105,7 +111,7 @@ def get_all_vehicles():
 #     response_body = [favorite.serialize() for favorite in user.favorites]
 #     return jsonify(response_body), 200
 
-# @app.route('/favorite/planets', methods=['POST'])
+# @app.route('/favorites/planets', methods=['POST'])
 # def add_favorite_planet():
 #     # Suponiendo que el usuario actual tiene id=1
 #     user = User.query.get(1)
@@ -114,7 +120,7 @@ def get_all_vehicles():
 #     response_body = [favorite.serialize() for favorite in user.favorites]
 #     return jsonify(response_body), 200
 
-# @app.route('/favorite/vehicles', methods=['POST'])
+# @app.route('/favorites/vehicles', methods=['POST'])
 # def add_favorite_vehicle():
 #     # Suponiendo que el usuario actual tiene id=1
 #     user = User.query.get(1)
