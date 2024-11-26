@@ -106,7 +106,7 @@ def get_user_favorites():
 # def add_favorite_character():
 #     # Suponiendo que el usuario actual tiene id=1
 #     user = User.query.get(1)
-#     if len(favorites) <= 0:
+#     if len(favorite.character) <= 0:
 #         return jsonify({"error": "favorites not found"}), 404
 #     response_body = [favorite.serialize() for favorite in user.favorites]
 #     return jsonify(response_body), 200
@@ -128,6 +128,14 @@ def get_user_favorites():
 #         return jsonify({"error": "favorites not found"}), 404
 #     response_body = [favorite.serialize() for favorite in user.favorites]
     # return jsonify(response_body), 200
+
+@app.route('/favorites/characters/<int:character_id>', methods=['DELETE'])
+def delete_favorite_character(character_id):
+    favorite = Favorite.query.filter_by(user_id=1, character_id=character_id).first_or_404()
+    db.session.delete(favorite)
+    db.session.commit()
+    return '', 204
+    
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

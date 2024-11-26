@@ -85,7 +85,7 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
     character_id = db.Column(db.Integer, db.ForeignKey('Character.id'), nullable=False)
     planet_id = db.Column(db.Integer, db.ForeignKey('Planets.id'), nullable=True)
-    vehicles_id = db.Column(db.Integer, db.ForeignKey('Vehicles.id'), nullable=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('Vehicles.id'), nullable=True)
 
     user = db.relationship('User', back_populates='favorites')
     character = db.relationship('Character', lazy='joined')
