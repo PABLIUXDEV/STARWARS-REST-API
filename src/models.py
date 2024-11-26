@@ -82,15 +82,16 @@ class Vehicle(db.Model):
 class Favorite(db.Model):
     __tablename__ = 'Favorite'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    character_id = db.Column(db.Integer, db.ForeignKey('Character.id'), nullable=True)
-    planet_id = db.Column(db.Integer, db.ForeignKey('Planets.id'), nullable=True)
-    vehicle_id = db.Column(db.Integer, db.ForeignKey('Vehicles.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    user = db.relationship('User', back_populates='favorites')
+    character_id = db.Column(db.Integer, db.ForeignKey('Character.id'), nullable=True)
+    planet_id = db.Column(db.Integer, db.ForeignKey('Planet.id'), nullable=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('Vehicle.id'), nullable=True)
+
+    user = db.relationship('User')
     character = db.relationship('Character')
-    planet = db.relationship('Planets')    
-    vehicle = db.relationship('Vehicles')    
+    planet = db.relationship('Planet')    
+    vehicle = db.relationship('Vehicle')    
     
     def __repr__(self):
         return '<Favorite %r>' % self.model
@@ -99,9 +100,9 @@ class Favorite(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "character": self.characters.to_dict() if self.characters else none,
-            "planet": self.planet.to_dict() if self.planet else none,
-            "vehicle": self.vehicle.to_dict() if self.vehicle else none
+            "character": self.characters.to_dict() if self.characters else None,
+            "planet": self.planet.to_dict() if self.planet else None,
+            "vehicle": self.vehicle.to_dict() if self.vehicle else None
             # do not serialize the password, its a security breach
         }
 
