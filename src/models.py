@@ -8,7 +8,7 @@ class User(db.Model):
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
-    favorites = db.relationship('Favorite', back_populates='user', lazy=True)
+    # favorites = db.relationship('Favorite', back_populates='user', lazy=True)
 
 
     def __repr__(self):
@@ -83,14 +83,14 @@ class Favorite(db.Model):
     __tablename__ = 'Favorite'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    character_id = db.Column(db.Integer, db.ForeignKey('Character.id'), nullable=False)
+    character_id = db.Column(db.Integer, db.ForeignKey('Character.id'), nullable=True)
     planet_id = db.Column(db.Integer, db.ForeignKey('Planets.id'), nullable=True)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('Vehicles.id'), nullable=True)
 
     user = db.relationship('User', back_populates='favorites')
-    character = db.relationship('Character', lazy='joined')
-    planet = db.relationship('Planets', lazy='joined')    
-    vehicle = db.relationship('Vehicles', lazy='joined')    
+    character = db.relationship('Character')
+    planet = db.relationship('Planets')    
+    vehicle = db.relationship('Vehicles')    
     
     def __repr__(self):
         return '<Favorite %r>' % self.model

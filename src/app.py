@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Character, Planet, Vehicle
+from models import db, User, Character, Planet, Vehicle, Favorite
 #from models import Person
 
 app = Flask(__name__)
@@ -102,14 +102,17 @@ def get_user_favorites():
     return jsonify(response_body), 200
 
 
-# @app.route('/favorites/characters', methods=['POST'])
-# def add_favorite_character():
-#     # Suponiendo que el usuario actual tiene id=1
-#     user = User.query.get(1)
-#     if len(favorite.character) <= 0:
-#         return jsonify({"error": "favorites not found"}), 404
-#     response_body = [favorite.serialize() for favorite in user.favorites]
-#     return jsonify(response_body), 200
+@app.route('/favorites/characters/<int:character_id>', methods=['POST'])
+def add_favorite_character(character_id):
+    # Suponiendo que el usuario actual tiene id=1
+    user = User.query.get(1)
+    character = Character.query.get(character_id)
+    new_favorite = Favorite()
+    new_favorite.user = user
+    new_favorite.character = character
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify(new_favorite.serialize()), 200
 
 # @app.route('/favorites/planets', methods=['POST'])
 # def add_favorite_planet():
