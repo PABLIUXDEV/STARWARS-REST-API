@@ -114,30 +114,44 @@ def add_favorite_character(character_id):
     db.session.commit()
     return jsonify(new_favorite.serialize()), 200
 
-# @app.route('/favorites/planets', methods=['POST'])
-# def add_favorite_planet():
-#     # Suponiendo que el usuario actual tiene id=1
-#     user = User.query.get(1)
-#     if len(favorites) <= 0:
-#         return jsonify({"error": "favorites not found"}), 404
-#     response_body = [favorite.serialize() for favorite in user.favorites]
-#     return jsonify(response_body), 200
-
-# @app.route('/favorites/vehicles', methods=['POST'])
-# def add_favorite_vehicle():
-#     # Suponiendo que el usuario actual tiene id=1
-#     user = User.query.get(1)
-#     if len(favorites) <= 0:
-#         return jsonify({"error": "favorites not found"}), 404
-#     response_body = [favorite.serialize() for favorite in user.favorites]
-    # return jsonify(response_body), 200
-
-@app.route('/favorites/characters/<int:character_id>', methods=['DELETE'])
-def delete_favorite_character(character_id):
-    favorite = Favorite.query.filter_by(user_id=1, character_id=character_id).first_or_404()
-    db.session.delete(favorite)
+@app.route('/favorites/planets/<int:planet_id>', methods=['POST'])
+def add_favorite_planet(planet_id):
+    # Suponiendo que el usuario actual tiene id=1
+    user = User.query.get(1)
+    planet = Planet.query.get(planet_id)
+    new_favorite = Favorite()
+    new_favorite.user = user
+    new_favorite.planet = planet
+    db.session.add(new_favorite)
     db.session.commit()
-    return '', 204
+    return jsonify(new_favorite.serialize()), 200
+
+@app.route('/favorites/vehicles/<int:vehicle_id>', methods=['POST'])
+def add_favorite_vehicle(vehicle_id):
+    # Suponiendo que el usuario actual tiene id=1
+    user = User.query.get(1)
+    vehicle = Vehicle.query.get(vehicle_id)
+    new_favorite = Favorite()
+    new_favorite.user = user
+    new_favorite.vehicle = vehicle
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify(new_favorite.serialize()), 200
+
+# @app.route('/favorites/planets/<int:planet_id>', methods=['DELETE'])
+# def delete_favorite_planet(planet_id):
+#     favorite = Favorite.query.filter_by(user_id=1, planet_id=planet_id).first_or_404()
+#     db.session.delete(favorite)
+#     db.session.commit()
+#     return '', 204
+
+@app.route('/favorites/planets/<int:planet_id>', methods=['DELETE'])
+def delete_one_favorite_planet(planet_id):
+    delete_favorite_planet = Favorite.query.get(planet_id)
+    db.session.delete(delete_favorite_planet)
+    db.session.commit()
+    return jsonify({"msg": "Favorite planet deleted succesfully"}), 200
+
     
 
 # this only runs if `$ python src/app.py` is executed

@@ -12,7 +12,7 @@ class User(db.Model):
 
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.id
 
     def serialize(self):
         return {
@@ -94,7 +94,7 @@ class Favorite(db.Model):
     vehicle = db.relationship('Vehicle')    
     
     def __repr__(self):
-        return '<Favorite %r>' % self.model
+        return '<Favorite %r>' % self.id
 
     def serialize(self):
         return {
