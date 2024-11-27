@@ -99,9 +99,9 @@ class Favorite(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "character": self.characters.to_dict() if self.characters else None,
-            "planet": self.planet.to_dict() if self.planet else None,
-            "vehicle": self.vehicle.to_dict() if self.vehicle else None
+            "character": self.character,
+            "planet": self.planet,
+            "vehicle": self.vehicle
             # do not serialize the password, its a security breach
         }
 
