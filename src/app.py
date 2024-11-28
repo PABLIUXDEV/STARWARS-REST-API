@@ -45,6 +45,13 @@ def get_all_users():
     response_body = [user.serialize() for user in users]
     return jsonify(response_body), 200
 
+@app.route('/user/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+
+    user = User.query.get_or_404(user_id)
+    return jsonify(user.serialize()), 200
+
+
 @app.route('/characters', methods=['GET'])
 def get_all_characters():
 
@@ -130,9 +137,12 @@ def add_favorite_vehicle(vehicle_id):
     return jsonify(new_favorite.serialize()), 200
 
 
-@app.route('/favorites/characters/<int:character_id>', methods=['DELETE'])
-def delete_one_favorite_character(character_id):
-    delete_favorite_character = Favorite.query.get(character_id)
+@app.route('/favorites/characters/<int:character_id>/<int:user_id>', methods=['DELETE'])
+def delete_one_favorite_character(character_id, user_id):
+    delete_favorite_character = Favorite.query.filter_by(character_id=character_id, user_id=user_id).first()
+    if delete_favorite_character is None:
+        return jsonify({"msg":"No character deleted"}), 404
+    print(delete_favorite_character)
     db.session.delete(delete_favorite_character)
     db.session.commit()
     return jsonify({"msg": "Favorite character deleted succesfully"}), 200
@@ -147,9 +157,12 @@ def delete_one_favorite_planet(planet_id, user_id):
     db.session.commit()
     return jsonify({"msg": "Favorite planet deleted succesfully"}), 200
 
-@app.route('/favorites/vehicles/<int:vehicle_id>', methods=['DELETE'])
-def delete_one_favorite_vehicle(vehicle_id):
-    delete_favorite_vehicle = Favorite.query.get(vehicle_id)
+@app.route('/favorites/vehicles/<int:vehicle_id>/<int:user_id>', methods=['DELETE'])
+def delete_one_favorite_vehicle(vehicle_id, user_id):
+    delete_favorite_vehicle = Favorite.query.filter_by(vehicle_id=vehicle_id, user_id=user_id).first()
+    if delete_favorite_vehicle is None:
+        return jsonify({"msg":"No favorite vehicle deleted"}), 404
+    print(delete_favorite_vehicle)
     db.session.delete(delete_favorite_vehicle)
     db.session.commit()
     return jsonify({"msg": "Favorite vehicle deleted succesfully"}), 200
